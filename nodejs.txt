@@ -1,0 +1,23 @@
+const express = require("express");
+const app = express();
+const cors = require("cors");
+
+app.use(cors());
+
+// Sample courier data (later you can connect to DB)
+let shipments = {
+  "ABC123": { trackingId: "ABC123", status: "In Transit", location: "Hyderabad", deliveryDate: "2025-09-05" },
+  "XYZ789": { trackingId: "XYZ789", status: "Delivered", location: "Bangalore", deliveryDate: "2025-09-01" }
+};
+
+// API to track shipment
+app.get("/track/:id", (req, res) => {
+  const id = req.params.id;
+  if(shipments[id]){
+    res.json({ success: true, ...shipments[id] });
+  } else {
+    res.json({ success: false, message: "Tracking ID not found" });
+  }
+});
+
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
